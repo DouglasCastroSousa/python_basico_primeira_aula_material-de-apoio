@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Interativa de Python</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            color: #44403c; /* stone-700 */
+        }
+        .nav-link:hover {
+            background-color: #fef3c7; /* amber-100 */
+            color: #b45309; /* amber-700 */
+        }
+        .nav-link.active {
+            background-color: #d97706; /* amber-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .page-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+        }
+        .code-btn {
+            background-color: #0ea5e9; /* sky-500 */
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        .code-btn:hover {
+            background-color: #0284c7; /* sky-600 */
+        }
+        .console-output {
+            background-color: #1f2937; /* gray-800 */
+            color: #f9fafb; /* gray-50 */
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1rem;
+            border-radius: 0 0 0.5rem 0.5rem;
+            min-height: 10rem;
+            max-height: 20rem;
+            overflow-y: auto;
+            white-space: pre;
+        }
+        .console-output .prompt {
+            color: #9ca3af; /* gray-400 */
+        }
+        .console-output .output {
+            color: #4ade80; /* green-400 */
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800">
+
+    <div class="md:flex min-h-screen">
+        
+        <div class="md:hidden flex justify-between items-center p-4 bg-white shadow-md sticky top-0 z-10">
+            <h1 class="text-xl font-bold text-amber-700">🐍 Aula de Python</h1>
+            <button id="mobile-menu-button" class="text-stone-800 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <svg class="w-6 h-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <nav id="sidebar" class="hidden md:block w-full md:w-64 bg-white p-6 shadow-xl flex-shrink-0 absolute md:relative z-20 md:z-0 min-h-screen md:min-h-0">
+            <div class="flex items-center mb-8">
+                <span class="text-3xl mr-2">🐍</span>
+                <h1 class="text-2xl font-bold text-amber-700">Aula de Python</h1>
+            </div>
+            <ul class="space-y-2" id="nav-list">
+                <li><a href="#inicio" class="nav-link">Início</a></li>
+                <li><a href="#ambiente" class="nav-link">O Ambiente</a></li>
+                <li><a href="#logica" class="nav-link">Lógica de Programação</a></li>
+                <li><a href="#passos" class="nav-link">Primeiros Passos</a></li>
+                <li><a href="#conclusao" class="nav-link">Conclusão</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10 max-h-screen overflow-y-auto">
+            
+            <section id="inicio-content" class="page-content">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-4xl font-bold text-amber-700 mb-4">🐍 Introdução à Programação com Python</h2>
+                    <p class="text-xl text-stone-600 mb-6">Entenda os Fundamentos: Ambiente, Lógica e Primeiros Comandos</p>
+                    <div class="border-l-4 border-amber-500 pl-4 py-2 bg-amber-50 rounded-md">
+                        <h3 class="text-lg font-semibold text-stone-700 mb-3">Objetivos da Aula:</h3>
+                        <ul class="list-none space-y-2">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Preparação das ferramentas necessárias (O Ambiente).</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Entender como os computadores "pensam" (Lógica).</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Escrever suas primeiras linhas de código (Python Básico).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ambiente-content" class="page-content hidden">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-6">Módulo 1: O Ambiente Python</h2>
+                    <p class="text-lg text-stone-600 mb-6">Esta seção detalha as ferramentas essenciais que você precisa para começar a programar em Python. Entender o "onde" é o primeiro passo antes de pular para o "como".</t>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-2">1. O Interpretador Python</h3>
+                            <p><strong>O que é?</strong> O programa que lê e executa seu código. É a "máquina" que transforma seu texto em ações reais do computador.</p>
+                            <p><strong>Instalação:</strong> Baixe a versão mais recente em python.org.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-2">2. O Editor de Código (IDE)</h3>
+                            <p><strong>O que faz?</strong> Ferramenta onde você escreve e gerencia seu código. Oferece destaque de sintaxe, auto-complete e ajuda a encontrar erros.</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                                <li><strong>VS Code:</strong> Leve, popular e altamente configurável.</li>
+                                <li><strong>PyCharm Community:</strong> IDE robusta, específica para Python.</li>
+                                <li><strong>(Início rápido):</strong> IDLE (vem com o Python) ou ambiente online como o Replit.</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-stone-700 mt-8 mb-4">Instruções de Instalação:</h3>
+                        
+                        <div id='instrucoes' class="space-y-4 my-6">
+                            <a href="https://www.hashtagtreinamentos.com/como-instalar-o-vs-code-javascript" 
+                               class="code-btn block text-center py-3"
+                               target="_blank">
+                               Instalando e configurando o VSCode <img class="bg-white p-1 rounded " src="imgs/Visual_Studio_Code.png" width="40px" alt="">
+                            </a>
+                            <a href="https://www.hashtagtreinamentos.com/pycharm-python" 
+                               class="code-btn block text-center py-3" 
+                               style="background-color: #44403c; /* stone-700 */"
+                               target="_blank">
+                                Instalando e configurando o PyCharm <img class="bg-white p-1 rounded " src="imgs/PyCharm_Icon.png" width="40px" alt="">
+                            </a>
+                            </a>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-2">3. Ambientes Virtuais (Virtual Envs)</h3>
+                            <p><strong>Conceito:</strong> Uma área isolada para cada projeto.</p>
+                            <p><strong>Por que usar?</strong> Evita conflitos entre dependências de projetos diferentes. Vamos focar na prática hoje, mas é um conceito chave para o futuro.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="logica-content" class="page-content hidden">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-6">Módulo 2: O que é Lógica de Programação?</h2>
+                    <p class="text-lg text-stone-600 mb-6">Antes de escrever código, precisamos aprender a "pensar" de forma estruturada. A lógica de programação é a técnica de organizar instruções em uma sequência que o computador possa entender para resolver um problema.</p>
+
+                    <h3 class="text-2xl font-semibold text-stone-700 mb-3">💡 Analogia: Receita de Bolo</h3>
+                    <p class="mb-4">Pense em programar como escrever uma receita muito detalhada para alguém que segue as instruções literalmente.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center mb-8">
+                        <div class="bg-amber-100 p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-amber-800">Problema</h4>
+                            <p>Fazer um bolo</p>
+                        </div>
+                        <div class="bg-sky-100 p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-sky-800">Algoritmo</h4>
+                            <p>A sequência de passos</p>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-green-800">Código</h4>
+                            <p>A receita escrita em Python</p>
+                        </div>
+                        <div class="bg-stone-200 p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-stone-800">Saída</h4>
+                            <p>O bolo pronto!</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-stone-700 mb-4">Componentes Essenciais da Lógica</h3>
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-bold text-lg">1. Algoritmos</h4>
+                            <p>Conjunto finito e ordenado de passos para atingir um objetivo. (Ex: Passos para logar no Instagram).</p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-bold text-lg">2. Variáveis</h4>
+                            <p><strong>Onde a informação mora:</strong> Um espaço na memória para armazenar dados (Ex: `nome_aluno = "Maria"`).</p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-bold text-lg">3. Estruturas de Controle de Fluxo</h4>
+                            <p>Como o código decide o que fazer e quando repetir.</p>
+                            <ul class="list-disc list-inside ml-4 mt-2">
+                                <li><strong>Sequencial:</strong> Executa uma linha após a outra.</li>
+
+                                <h1 class="ml-6">- O que veremos nas próximas aulas:</h1>
+                                <li><strong>Condicional:</strong> Toma decisões (Ex: SE chover, ENTÃO pegar guarda-chuva).</li>
+                                <li><strong>Repetição (Loops):</strong> Repete um bloco de código (Ex: PARA CADA aluno, FAÇA chamada).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="passos-content" class="page-content hidden">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-6">Módulo 3: Primeiros Passos com Python</h2>
+                    <p class="text-lg text-stone-600 mb-6">Vamos escrever nosso primeiro código! Esta seção é interativa. Clique nos botões "Executar" para ver a saída dos comandos em nosso "mini-console" simulado.</p>
+
+                    <div class="bg-stone-900 rounded-lg shadow-inner overflow-hidden my-6">
+                        <div class="bg-stone-700 p-3 text-sm text-stone-300 flex justify-between items-center">
+                            <span>🐍 Mini-Console Python</span>
+                            <button id="clear-console" class="text-xs bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">Limpar</button>
+                        </div>
+                        <div id="console-output" class="console-output">
+                            <span class="prompt">> </span><span>Pronto para executar...</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-3">A Função `print()`</h3>
+                            <p class="mb-4">É a forma mais básica de mostrar uma mensagem na tela.</p>
+                            <div class="bg-white p-4 rounded-lg shadow border">
+                                <code class="block bg-gray-100 text-gray-800 p-3 rounded mb-3">print("Olá, Mundo!")</code>
+                                <button class="code-btn" data-output="Olá, Mundo!">Executar</button>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow border mt-4">
+                                <code class="block bg-gray-100 text-gray-800 p-3 rounded mb-3">print(10 + 5)</code>
+                                <button class="code-btn" data-output="15">Executar</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-3">Comentários</h3>
+                            <p class="mb-4">Serve para explicar o código. O interpretador ignora linhas que começam com `#`.</p>
+                            <div class="bg-white p-4 rounded-lg shadow border">
+                                <pre class="code-block text-gray-400 mb-3"># Este é um comentário. Não vai aparecer.
+<span class="text-white">print("Isso será executado!")</span></pre>
+                                <button class="code-btn" data-output="Isso será executado!">Executar</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-3">Armazenando Informação (Variáveis)</h3>
+                            <p class="mb-4">Guardamos dados em "caixas" com nomes. Em Python, basta atribuir um valor.</p>
+                            <div class="bg-white p-4 rounded-lg shadow border">
+                                <pre class="code-block text-white mb-3">nome = "Carlos"
+idade = 25
+print("Nome:", nome)
+print("Idade futura:", idade + 1)</pre>
+                                <button class="code-btn" data-output="Nome: Carlos\nIdade futura: 26">Executar</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-stone-700 mb-3">Tipos de Dados Fundamentais</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 border rounded-lg">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipo</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Exemplo</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">O que armazena?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap font-bold">str</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">String</td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><code class="bg-gray-100 p-1 rounded">"Olá"</code></td>
+                                            <td class="px-6 py-4">Textos e caracteres</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap font-bold">int</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Integer</td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><code class="bg-gray-100 p-1 rounded">42</code></td>
+                                            <td class="px-6 py-4">Números inteiros</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap font-bold">float</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Float</td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><code class="bg-gray-100 p-1 rounded">3.14</code></td>
+                                            <td class="px-6 py-4">Números com casas decimais</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap font-bold">bool</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Boolean</td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><code class="bg-gray-100 p-1 rounded">True</code></td>
+                                            <td class="px-6 py-4">Valores lógicos (Verdadeiro/Falso)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-stone-700 mt-8 mb-4">Visualização: Frequência de Tipos de Dados Iniciais</h3>
+                            <p class="mb-4 text-stone-600">Em scripts de iniciantes, a manipulação de texto (strings) e números (inteiros) é geralmente o foco principal.</p>
+                            <div class="bg-white p-6 rounded-lg shadow-lg border">
+                                <div class="chart-container">
+                                    <canvas id="tiposChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusao-content" class="page-content hidden">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-amber-700 mb-6">Conclusão e Próximos Passos</h2>
+                    
+                    <h3 class="text-2xl font-semibold text-stone-700 mb-4">Resumo da Jornada</h3>
+                    <ul class="list-none space-y-3 mb-6">
+                        <li class="flex items-start"><span class="text-2xl text-green-500 mr-3">✅</span><div><strong>Ambiente:</strong> Vimos a necessidade do Interpretador (Python) e do Editor (VS Code/PyCharm).</div></li>
+                        <li class="flex items-start"><span class="text-2xl text-green-500 mr-3">✅</span><div><strong>Lógica:</strong> Entendemos que programar é criar algoritmos (instruções sequenciais) para resolver problemas.</div></li>
+                        <li class="flex items-start"><span class="text-2xl text-green-500 mr-3">✅</span><div><strong>Python:</strong> Aprendemos a exibir informações print(), pedir informações input("") e armazenar dados em variáveis nome = "Valor".</div></li>
+                    </ul>
+
+                    <div class="bg-sky-50 border-l-4 border-sky-500 p-6 rounded-md">
+                        <h3 class="text-2xl font-semibold text-sky-800 mb-4">🚀 Desafio e Próximos Passos</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-stone-700">
+                            <li><strong>Instalação:</strong> Instale o Python e o VS Code em sua máquina.</li>
+                            <li><strong>Prática:</strong> Crie um novo arquivo `.py` e use o `print()` para exibir uma frase e o resultado de uma soma (tente `100 - 25`).</li>
+                            <li><strong>Explore:</strong> Pesquise sobre <strong>Operadores Aritméticos</strong> em Python (multiplicação `*`, divisão `/`).</li>
+                        </ol>
+                    </div>
+
+                    <p class="text-center text-xl font-semibold text-stone-600 mt-10">Dúvidas? Perguntas? Vamos codificar!</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageContents = document.querySelectorAll('.page-content');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const navList = document.getElementById('nav-list');
+
+            function showPage(hash) {
+                let targetHash = hash || '#inicio';
+                
+                if (!document.querySelector(`.nav-link[href="${targetHash}"]`)) {
+                    targetHash = '#inicio';
+                }
+
+                pageContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                const targetContent = document.getElementById(targetHash.substring(1) + '-content');
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                }
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === targetHash) {
+                        link.classList.add('active');
+                    }
+                });
+
+                if (sidebar.classList.contains('md:hidden') && !sidebar.classList.contains('hidden')) {
+                    sidebar.classList.add('hidden');
+                }
+            }
+
+            navList.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const hash = e.target.getAttribute('href');
+                    history.pushState(null, '', hash);
+                    showPage(hash);
+                }
+            });
+
+            window.addEventListener('popstate', function() {
+                showPage(location.hash);
+            });
+
+            mobileMenuButton.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+            });
+
+            showPage(location.hash);
+
+            const consoleOutput = document.getElementById('console-output');
+            const runButtons = document.querySelectorAll('.code-btn');
+            const clearConsoleBtn = document.getElementById('clear-console');
+
+            runButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const output = this.dataset.output;
+                    // Verifica se o botão é um link antes de processar a saída do console
+                    if (output) { 
+                        const lines = output.split('\\n');
+                        
+                        lines.forEach(line => {
+                            const outputLine = document.createElement('div');
+                            outputLine.innerHTML = `<span class="output">${line}</span>`;
+                            consoleOutput.appendChild(outputLine);
+                        });
+
+                        const promptLine = document.createElement('div');
+                        promptLine.innerHTML = `<span class="prompt">> </span>`;
+                        consoleOutput.appendChild(promptLine);
+                        
+                        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                    }
+                });
+            });
+
+            clearConsoleBtn.addEventListener('click', function() {
+                consoleOutput.innerHTML = '<div><span class="prompt">> </span><span>Console limpo.</span></div>';
+            });
+
+            const ctx = document.getElementById('tiposChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Strings (str)', 'Inteiros (int)', 'Floats (float)', 'Booleans (bool)'],
+                    datasets: [{
+                        label: 'Frequência de Uso (Didático)',
+                        data: [40, 35, 15, 10],
+                        backgroundColor: [
+                            '#0ea5e9', // sky-500
+                            '#10b981', // emerald-500
+                            '#f59e0b', // amber-500
+                            '#8b5cf6'  // violet-500
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#44403c', // stone-700
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const allButtons = document.querySelectorAll('.code-btn');
+            allButtons.forEach(button => {
+
+        
+                if (button.tagName !== 'A') {
+                    button.addEventListener('click', function() {
+                        const output = this.dataset.output;
+                        if (output) {
+                            const lines = output.split('\\n');
+                            
+                            lines.forEach(line => {
+                                const outputLine = document.createElement('div');
+                                outputLine.innerHTML = `<span class="output">${line}</span>`;
+                                consoleOutput.appendChild(outputLine);
+                            });
+
+                            const promptLine = document.createElement('div');
+                            promptLine.innerHTML = `<span class="prompt">> </span>`;
+                            consoleOutput.appendChild(promptLine);
+                            
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+#instrucoes {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#instrucoes a {
+    margin: 0px;
+    width: 45%;
+    height: 100px;
+    gap: 10px;
+
+}
