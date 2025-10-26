@@ -99,7 +99,7 @@
             </button>
         </div>
 
-        <nav id="sidebar" class="hidden md:block w-full md:w-64 bg-white p-6 shadow-xl flex-shrink-0 absolute md:relative z-20 md:z-0 min-h-screen md:min-h-0">
+        <nav id="sidebar" class="hidden md:block w-full md:w-64 bg-white p-6 pt-16 md:pt-6 shadow-xl flex-shrink-0 absolute md:relative z-0 md:z-0 min-h-screen md:min-h-0">
             <div class="flex items-center mb-8">
                 <span class="text-3xl mr-2">🐍</span>
                 <h1 class="text-2xl font-bold text-amber-700">Aula de Python</h1>
@@ -158,13 +158,13 @@
                             <a href="https://www.hashtagtreinamentos.com/como-instalar-o-vs-code-javascript" 
                                 class="code-btn block text-center py-3"
                                 target="_blank">
-                                Instalando e configurando o VSCode <img class="bg-white p-1 rounded " src="imgs/Visual_Studio_Code.png" width="40px" alt="">
+                                Instalando e configurando o VSCode
                             </a>
                             <a href="https://www.hashtagtreinamentos.com/pycharm-python" 
                                 class="code-btn block text-center py-3" 
                                 style="background-color: #44403c; /* stone-700 */"
                                 target="_blank">
-                                 Instalando e configurando o PyCharm <img class="bg-white p-1 rounded " src="imgs/PyCharm_Icon.png" width="40px" alt="">
+                                 Instalando e configurando o PyCharm
                             </a>
                             </a>
                         </div>
@@ -333,33 +333,38 @@ print(f"A média do aluno é: {media}")
             const sidebar = document.getElementById('sidebar');
             const navList = document.getElementById('nav-list');
 
-            function showPage(hash) {
-                let targetHash = hash || '#inicio';
-                
-                if (!document.querySelector(`.nav-link[href="${targetHash}"]`)) {
-                    targetHash = '#inicio';
-                }
-
-                pageContents.forEach(content => {
-                    content.classList.add('hidden');
-                });
-                
-                const targetContent = document.getElementById(targetHash.substring(1) + '-content');
-                if (targetContent) {
-                    targetContent.classList.remove('hidden');
-                }
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === targetHash) {
-                        link.classList.add('active');
-                    }
-                });
-
-                if (sidebar.classList.contains('md:hidden') && !sidebar.classList.contains('hidden')) {
-                    sidebar.classList.add('hidden');
-                }
+        function showPage(hash) {
+            let targetHash = hash || '#inicio';
+            
+            if (!document.querySelector(`.nav-link[href="${targetHash}"]`)) {
+                targetHash = '#inicio';
             }
+
+            pageContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            const targetContent = document.getElementById(targetHash.substring(1) + '-content');
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === targetHash) {
+                    link.classList.add('active');
+                }
+            });
+
+            const isMobileView = mobileMenuButton.offsetParent !== null;
+            
+            
+            if (!sidebar.classList.contains('hidden') && isMobileView) {
+                
+                sidebar.classList.add('hidden');
+            }
+            
+        }
 
             navList.addEventListener('click', function(e) {
                 if (e.target.tagName === 'A') {
